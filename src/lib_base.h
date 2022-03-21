@@ -54,6 +54,10 @@ style_bold(char* s);
 void*
 copy(void* ptr, size_t size);
 
+// Copy str
+char*
+copy_str(char *str);
+
 typedef struct case_t case_t;
 typedef struct suite_t suite_t;
 typedef struct test_t test_t;
@@ -117,12 +121,12 @@ struct suite_t
 {
     const char* name;        // Name of suite
     double time;             // Time of case(s) execution
-    struct vec_t* cases; // Vector of lily0_case
+    struct vec_t* cases; // Vector of case_t
 };
 
 struct test_t
 {
-    struct vec_t* suites; // Vector of lily0_suite
+    struct vec_t* suites; // Vector of suite_t
     double time;              // Time of suite(s) execution
 };
 
@@ -130,53 +134,53 @@ struct test_t
 // name: Name of case
 // f: Function test
 struct case_t*
-lily0_case_init(const char* name, void(*f));
+case_init(const char* name, void(*f));
 
 // Init suite_t
 // name: Name of suite
 struct suite_t*
-lily0_suite_init(const char* name);
+suite_init(const char* name);
 
 // Init test_t
 struct test_t*
-lily0_test_init();
+test_init();
 
 // Add case to suite_t
 void
-lily0_suite_add_case_to_suite(struct suite_t* suite,
+suite_add_case_to_suite(struct suite_t* suite,
                               struct case_t* _case);
 
 #define CASE(suite, name, f)                                                   \
-    lily0_suite_add_case_to_suite(suite, lily0_case_init(#name, f))
+    suite_add_case_to_suite(suite, case_init(#name, f))
 
-// Add suite to lily0_test
+// Add suite to test_t
 void
-lily0_test_add_suite_to_test(struct test_t* test,
+test_add_suite_to_test(struct test_t* test,
                              struct suite_t* suite);
 
-#define SUITE(test, suite) lily0_test_add_suite_to_test(test, suite)
+#define SUITE(test, suite) test_add_suite_to_test(test, suite)
 
 // Run a case
 int
-lily0_case_run_case(struct case_t* _case);
+case_run_case(struct case_t* _case);
 
 // Run a suite
 void
-lily0_suite_run_suite(struct suite_t* suite);
+suite_run_suite(struct suite_t* suite);
 
 // Run all tests
 void
-lily0_test_run_test(struct test_t* test);
+test_run_test(struct test_t* test);
 
 #define RUN_TEST(test)                                                         \
     {                                                                          \
-        lily0_test_run_test(test);                                             \
-        lily0_test_free(test);                                                 \
+        test_run_test(test);                                             \
+        test_free(test);                                                 \
     }
 
-// Free lily0_test type
+// Free test_t type
 void
-lily0_test_free(struct test_t* test);
+test_free(struct test_t* test);
 
 // -------------------------
 

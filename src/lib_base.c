@@ -1,5 +1,6 @@
 #include <time.h>
 #include <assert.h>
+#include <stdarg.h>
 
 #include "lib_base.h"
 
@@ -79,8 +80,8 @@ copy(void* ptr, size_t size)
 char*
 copy_str(char* str)
 {
-    char* str2 = malloc(sizeof(char));
-    str[0] = '\0';
+    char* str2 = malloc(strlen(str) + 1);
+    str2[0] = '\0';
 
     memcpy(str2, str, strlen(str) + 1);
 
@@ -320,6 +321,7 @@ vec_iter(struct vec_t* v, int (*f)(void*))
 {
     for (size_t i = 0; i < vec_len(v); i++)
         f(vec_get(v, i));
+		return 0;
 }
 
 void
@@ -412,7 +414,7 @@ result_free_err(struct result_t* res)
 // -------------------------
 
 struct string_t*
-lily0_string_init()
+string_init()
 {
     struct string_t* s = malloc(sizeof(struct string_t));
     s->buffer = malloc(sizeof(char) + 1);
