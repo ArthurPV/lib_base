@@ -1,6 +1,6 @@
-#include <time.h>
 #include <assert.h>
 #include <stdarg.h>
+#include <time.h>
 
 #include "lib_base.h"
 
@@ -120,8 +120,7 @@ test_init()
 }
 
 void
-suite_add_case_to_suite(struct suite_t* suite,
-                              struct case_t* _case)
+suite_add_case_to_suite(struct suite_t* suite, struct case_t* _case)
 {
     vec_push(suite->cases, (struct case_t*)_case);
 }
@@ -213,11 +212,9 @@ test_run_test(struct test_t* test)
     test->time = ((double)end - start) / CLOCKS_PER_SEC;
 
     if (vec_len(test->suites) > 1) {
-        println(
-          "%zu suites run in %fs.", vec_len(test->suites), test->time);
+        println("%zu suites run in %fs.", vec_len(test->suites), test->time);
     } else {
-        println(
-          "%zu suite run in %fs.", vec_len(test->suites), test->time);
+        println("%zu suite run in %fs.", vec_len(test->suites), test->time);
     }
 }
 
@@ -227,11 +224,9 @@ test_free(struct test_t* test)
     if (test) {
         for (size_t i = 0; i < vec_len(test->suites); i++) {
             for (size_t j = 0;
-                 j <
-                 vec_len(((struct suite_t*)test->suites->items[i])->cases);
+                 j < vec_len(((struct suite_t*)test->suites->items[i])->cases);
                  j++)
-                if (((struct suite_t*)test->suites->items[i])
-                      ->cases->items[j])
+                if (((struct suite_t*)test->suites->items[i])->cases->items[j])
                     free(((struct suite_t*)test->suites->items[i])
                            ->cases->items[j]);
 
@@ -321,7 +316,7 @@ vec_iter(struct vec_t* v, int (*f)(void*))
 {
     for (size_t i = 0; i < vec_len(v); i++)
         f(vec_get(v, i));
-		return 0;
+    return 0;
 }
 
 void
@@ -541,7 +536,7 @@ string_format(char* fmt, ...)
                 switch (fmt[i]) {
                     case 'b': {
                         struct string_t* str_b =
-                        string_of_bool(va_arg(vl, int));
+                          string_of_bool(va_arg(vl, int));
                         string_push_str(s, str_b->buffer);
                         string_free(str_b);
                         i++;
@@ -569,8 +564,7 @@ string_format(char* fmt, ...)
                 assert(i++ < strlen(fmt) && "out of str");
                 switch (fmt[i]) {
                     case 'd': {
-                        struct string_t* str_i =
-                        string_of_int(va_arg(vl, int));
+                        struct string_t* str_i = string_of_int(va_arg(vl, int));
                         string_push_str(s, str_i->buffer);
                         string_free(str_i);
                         i++;
@@ -578,7 +572,7 @@ string_format(char* fmt, ...)
                     }
                     case 'c': {
                         struct string_t* str_c =
-                        string_of_char(va_arg(vl, int));
+                          string_of_char(va_arg(vl, int));
                         string_push_str(s, str_c->buffer);
                         string_free(str_c);
                         i++;
@@ -586,7 +580,7 @@ string_format(char* fmt, ...)
                     }
                     case 'f': {
                         struct string_t* str_f =
-                        string_of_double(va_arg(vl, double));
+                          string_of_double(va_arg(vl, double));
                         string_push_str(s, str_f->buffer);
                         string_free(str_f);
                         i++;

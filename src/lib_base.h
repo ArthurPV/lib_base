@@ -1,18 +1,19 @@
 #ifndef LIB_BASE_H
 #define LIB_BASE_H
 
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define print(...) printf(__VA_ARGS__)
 
-#define println(...) { \
-	printf(__VA_ARGS__); \
-	printf("\n"); \
-}
+#define println(...)                                                           \
+    {                                                                          \
+        printf(__VA_ARGS__);                                                   \
+        printf("\n");                                                          \
+    }
 
 // Transform to red color from str
 char*
@@ -56,7 +57,7 @@ copy(void* ptr, size_t size);
 
 // Copy str
 char*
-copy_str(char *str);
+copy_str(char* str);
 
 typedef struct case_t case_t;
 typedef struct suite_t suite_t;
@@ -119,15 +120,15 @@ struct case_t
 
 struct suite_t
 {
-    const char* name;        // Name of suite
-    double time;             // Time of case(s) execution
+    const char* name;    // Name of suite
+    double time;         // Time of case(s) execution
     struct vec_t* cases; // Vector of case_t
 };
 
 struct test_t
 {
     struct vec_t* suites; // Vector of suite_t
-    double time;              // Time of suite(s) execution
+    double time;          // Time of suite(s) execution
 };
 
 // Init case_t
@@ -147,16 +148,13 @@ test_init();
 
 // Add case to suite_t
 void
-suite_add_case_to_suite(struct suite_t* suite,
-                              struct case_t* _case);
+suite_add_case_to_suite(struct suite_t* suite, struct case_t* _case);
 
-#define CASE(suite, name, f)                                                   \
-    suite_add_case_to_suite(suite, case_init(#name, f))
+#define CASE(suite, name, f) suite_add_case_to_suite(suite, case_init(#name, f))
 
 // Add suite to test_t
 void
-test_add_suite_to_test(struct test_t* test,
-                             struct suite_t* suite);
+test_add_suite_to_test(struct test_t* test, struct suite_t* suite);
 
 #define SUITE(test, suite) test_add_suite_to_test(test, suite)
 
@@ -174,8 +172,8 @@ test_run_test(struct test_t* test);
 
 #define RUN_TEST(test)                                                         \
     {                                                                          \
-        test_run_test(test);                                             \
-        test_free(test);                                                 \
+        test_run_test(test);                                                   \
+        test_free(test);                                                       \
     }
 
 // Free test_t type
