@@ -7,9 +7,9 @@
 char*
 color_red(char* s)
 {
-    size_t size = snprintf(NULL, 0, "\x1b[34m%s\x1b[0m", s) + 1;
+    size_t size = snprintf(NULL, 0, "\x1b[31m%s\x1b[0m", s) + 1;
     char* res = malloc(size);
-    snprintf(res, size, "\x1b[34m%s\x1b[0m", s);
+    snprintf(res, size, "\x1b[31m%s\x1b[0m", s);
     return res;
 }
 
