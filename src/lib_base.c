@@ -319,12 +319,21 @@ vec_iter(struct vec_t* v, int (*f)(void*))
     return 0;
 }
 
-void
-vec_free(struct vec_t* v)
-{
+void vec_free(struct vec_t *v) {
     if (v) {
         for (size_t i = 0; i < vec_len(v); i++)
             free(v->items[i]);
+        free(v->items);
+        free(v);
+    }
+}
+
+void
+vec_free_custom_ptr(struct vec_t* v, void(*f)(void*))
+{
+    if (v) {
+        for (size_t i = 0; i < vec_len(v); i++)
+            f(v->items[i]);
         free(v->items);
         free(v);
     }
@@ -386,21 +395,10 @@ result_get_value(struct result_t* res)
 }
 
 void
-result_free_ok(struct result_t* res)
+result_free(struct result_t* res)
 {
-    if (res) {
-        free(res->ok);
+    if (res)
         free(res);
-    }
-}
-
-void
-result_free_err(struct result_t* res)
-{
-    if (res) {
-        free(res->err);
-        free(res);
-    }
 }
 
 // -------------------------
@@ -536,7 +534,7 @@ string_format(char* fmt, ...)
                 switch (fmt[i]) {
                     case 'b': {
                         struct string_t* str_b =
-                          string_of_bool(va_arg(vl, int));
+                        string_of_bool(va_arg(vl, int));
                         string_push_str(s, str_b->buffer);
                         string_free(str_b);
                         i++;
@@ -544,7 +542,7 @@ string_format(char* fmt, ...)
                         break;
                     }
                     case 's': {
-                        struct string_t* str_s = va_arg(vl, string_t*);
+                        struct string_t* str_s = va_arg(vl, struct string_t*);
                         string_push_str(s, string_to_str(str_s));
                         string_free(str_s);
                         i++;

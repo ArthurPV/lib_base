@@ -233,9 +233,12 @@ vec_map(struct vec_t* v, void* (*f)(void*));
 struct vec_t*
 vec_filter(struct vec_t* v, bool (*f)(void*));
 
-// Free vec_t type
+// Free vec_t type with custom ptr like result_t*
 void
-vec_free(struct vec_t* v);
+vec_free_custom_ptr(struct vec_t* v, void(*f)(void*));
+
+// Free vec_t type
+void vec_free(struct vec_t *v);
 
 // Simple free vec_t type
 void
@@ -289,17 +292,13 @@ result_get_err_value(struct result_t* res);
 void*
 result_get_value(struct result_t* res);
 
-// Free result_t with ok value
+// Free result_t
 void
-result_free_ok(struct result_t* res);
-
-// Free lily0_result with err value
-void
-result_free_err(struct result_t* res);
+result_free(struct result_t* res);
 
 // -------------------------
 
-// lily0_string
+// string_t
 // -------------------------
 
 #define TRUE_STR "true"
