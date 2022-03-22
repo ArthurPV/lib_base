@@ -9,6 +9,8 @@ case_copy_int()
 
     ASSERT_EQ(*b, *c);
 
+    free(c);
+
     return TEST_SUCCESS;
 }
 
@@ -19,6 +21,8 @@ case_copy_str()
     char* b = copy_str(a);
 
     ASSERT(!strcmp(a, b));
+
+    free(b);
 
     return TEST_SUCCESS;
 }
@@ -44,6 +48,24 @@ case_copy_vec()
     return TEST_SUCCESS;
 }
 
+int case_copy_string() {
+    struct string_t *s = string_init();
+    string_push_char(s, 'h');
+    string_push_char(s, 'e');
+    string_push_char(s, 'l');
+    string_push_char(s, 'l');
+    string_push_char(s, 'o');
+
+    struct string_t *s2 = copy(s, STRING_T_SIZE);
+
+    ASSERT(!strcmp(string_to_str(s), string_to_str(s2)));
+
+    string_free(s);
+    free(s2);
+
+    return TEST_SUCCESS;
+}
+
 struct suite_t*
 copy_suite()
 {
@@ -52,6 +74,7 @@ copy_suite()
     CASE(c, copy int, case_copy_int);
     CASE(c, copy str, case_copy_str);
     CASE(c, copy vec, case_copy_str);
+    CASE(c, copy string, case_copy_string);
 
     return c;
 }
